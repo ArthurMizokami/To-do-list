@@ -1,8 +1,11 @@
 const listaTarefas = [];
 
-function adicionarTarefa(tarefa) {
-    if (tarefa.trim() !== "") {
-        listaTarefas.push(tarefa);
+function adicionarTarefa(tarefaTexto) {
+    if (tarefaTexto.trim() !== "") {
+        listaTarefas.push({
+            texto: tarefaTexto,
+            concluida: false
+        });
         atualizarLista();
     }
 }
@@ -26,15 +29,31 @@ function removerTarefa() {
 }
 document.getElementById('removeLastBtn').addEventListener("click", removerTarefa);
 
-function atualizarLista() {
-    const listaHTML = document.getElementById('taskContainer');
-    listaHTML.innerHTML = listaTarefas.map(tarefa => `<p>${tarefa}</p>`).join("");
-}
-
 function limparLista() {
-    if (listaTarefas.length > 0) {
-        listaTarefas.length = 0;
-        atualizarLista();
-    }
+    listaTarefas.length = 0;
+    atualizarLista();
 }
 document.getElementById('clearListBtn').addEventListener("click", limparLista);
+
+function atualizarLista() {
+    const listaHTML = document.getElementById('taskContainer');
+    listaHTML.innerHTML = "";
+
+    listaTarefas.forEach((tarefa, index) => {
+        const tarefaEl = document.createElement("p");
+        tarefaEl.textContent = tarefa.texto;
+        tarefaEl.style.cursor = "pointer";
+
+        if (tarefa.concluida) {
+            tarefaEl.style.textDecoration = "line-through"; // <-- Aqui estava errado
+            tarefaEl.style.color = "gray";
+        }
+
+        tarefaEl.addEventListener("click", () => {
+            listaTarefas[index].concluida = !listaTarefas[index].concluida;
+            atualizarLista();
+        });
+
+        listaHTML.appendChild(tarefaEl);
+    });
+}
