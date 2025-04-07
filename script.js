@@ -45,7 +45,7 @@ function atualizarLista() {
         tarefaEl.style.cursor = "pointer";
 
         if (tarefa.concluida) {
-            tarefaEl.style.textDecoration = "line-through"; // <-- Aqui estava errado
+            tarefaEl.style.textDecoration = "line-through";
             tarefaEl.style.color = "gray";
         }
 
